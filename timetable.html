@@ -1,0 +1,67 @@
+<meta charset="UTF-8">
+<title></title>
+<style type="text/css">body{    font-family:Arial, sans-serif;    background:linear-gradient(135deg,#d8d6f3,#c7e9f3);    padding:20px;}h1,h2{color:#5f2c82}.grid{    display:grid;    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));    gap:15px;    margin-bottom:30px;}.card{    background:white;    padding:15px;    text-align:center;    border-radius:12px;    cursor:pointer;    box-shadow:0 6px 15px rgba(0,0,0,.2);    transition:.3s;}.card:hover{    transform:scale(1.05);    background:#f3f0ff;}.popup{    display:none;    position:fixed;    inset:0;    background:rgba(0,0,0,.5);}.popup-box{    background:white;    max-width:450px;    margin:80px auto;    padding:20px;    border-radius:12px;    text-align:center;}table{    width:100%;    border-collapse:separate;    border-spacing:0 6px;}th{    background:#5f2c82;    color:white;    padding:8px;}td{    background:#fff;    padding:8px;}.lab td{background:#e1f5fe;font-weight:bold}.break td{background:#fff3cd}button{    padding:8px 14px;    margin:8px;    border:none;    border-radius:6px;    cursor:pointer;    background:#5f2c82;    color:white;}button:hover{opacity:.85}
+</style>
+<h1>Timetables</h1>
+
+<h2>BTech</h2>
+
+<div class="grid">
+<div class="card" onclick="openSem('BTech CSE')">Computer Science</div>
+
+<div class="card" onclick="openSem('BTech IT')">Information Technology</div>
+
+<div class="card" onclick="openSem('BTech AIML')">CS (AI & ML)</div>
+
+<div class="card" onclick="openSem('BTech EE')">Electrical Engineering</div>
+
+<div class="card" onclick="openSem('BTech ECE')">Electronics & Communication</div>
+</div>
+
+<h2>BCA</h2>
+
+<div class="grid">
+<div class="card" onclick="openSem('BCA')">Bachelor of Computer Applications</div>
+</div>
+
+<h2>MTech</h2>
+
+<div class="grid">
+<div class="card" onclick="openSem('MTech CSE')">Computer Science</div>
+
+<div class="card" onclick="openSem('MTech IT')">Information Technology</div>
+</div>
+
+<h2>MCA</h2>
+
+<div class="grid">
+<div class="card" onclick="openSem('MCA')">Master of Computer Applications</div>
+</div>
+<!-- SEMESTER POPUP -->
+
+<div class="popup" id="semPop">
+<div class="popup-box">
+<h3 id="dept"> </h3>
+<button onclick="showRoutine(1)">Semester 1</button><button onclick="showRoutine(2)">Semester 2</button><br />
+<button onclick="closeAll()">Close</button></div>
+</div>
+<!-- TIMETABLE POPUP -->
+
+<div class="popup" id="routinePop">
+<div class="popup-box">
+<h3 id="title"> </h3>
+
+<table>
+	<tbody>
+		<tr>
+			<th>Time</th>
+			<th>Subject</th>
+		</tr>
+	</tbody>
+	<tbody id="routineBody">
+	</tbody>
+</table>
+<br />
+<button onclick="closeAll()">Close</button></div>
+</div>
+<script>let currentDept="";const timetable={"BTech CSE":{1:[["9–10","Programming in C"],["10–11","Maths I"],["11–11:30","Lunch","break"],["11:30–12:30","Digital Logic"],["12:30–2","C Lab","lab"]],2:[["9–10","Data Structures"],["10–11","Discrete Maths"],["11–11:30","Lunch","break"],["11:30–12:30","COA"],["12:30–2","DS Lab","lab"]]},"BTech IT":{1:[["9–10","IT Fundamentals"],["10–11","Maths I"],["11–11:30","Lunch","break"],["11:30–12:30","Web Basics"],["12:30–2","Web Lab","lab"]],2:[["9–10","Java"],["10–11","OS"],["11–11:30","Lunch","break"],["11:30–12:30","DBMS"],["12:30–2","Java Lab","lab"]]},"BTech AIML":{1:[["9–10","Python"],["10–11","Linear Algebra"],["11–11:30","Lunch","break"],["11:30–12:30","AI Basics"],["12:30–2","Python Lab","lab"]],2:[["9–10","Machine Learning"],["10–11","Probability"],["11–11:30","Lunch","break"],["11:30–12:30","Data Visualization"],["12:30–2","ML Lab","lab"]]},"BTech EE":{1:[["9–10","Basic Electrical"],["10–11","Maths I"],["11–11:30","Lunch","break"],["11:30–12:30","Circuit Theory"],["12:30–2","Electrical Lab","lab"]],2:[["9–10","Power Systems"],["10–11","Control Systems"],["11–11:30","Lunch","break"],["11:30–12:30","Machines"],["12:30–2","Machines Lab","lab"]]},"BTech ECE":{1:[["9–10","Basic Electronics"],["10–11","Signals"],["11–11:30","Lunch","break"],["11:30–12:30","Network Theory"],["12:30–2","Electronics Lab","lab"]],2:[["9–10","Communication Systems"],["10–11","Microprocessors"],["11–11:30","Lunch","break"],["11:30–12:30","Digital Comm"],["12:30–2","MP Lab","lab"]]},"BCA":{1:[["9–10","Computer Basics"],["10–11","C Programming"],["11–11:30","Lunch","break"],["11:30–12:30","Maths"],["12:30–2","C Lab","lab"]],2:[["9–10","Data Structures"],["10–11","DBMS"],["11–11:30","Lunch","break"],["11:30–12:30","Web Design"],["12:30–2","DBMS Lab","lab"]]},"MTech CSE":{1:[["9–10","Advanced Algorithms"],["10–11","Advanced OS"],["11–11:30","Lunch","break"],["11:30–12:30","Research Methodology"],["12:30–2","Algo Lab","lab"]],2:[["9–10","Machine Learning"],["10–11","Distributed Systems"],["11–11:30","Lunch","break"],["11:30–12:30","Cloud Computing"],["12:30–2","ML Lab","lab"]]},"MTech IT":{1:[["9–10","Advanced Java"],["10–11","Web Services"],["11–11:30","Lunch","break"],["11:30–12:30","IT Project Mgmt"],["12:30–2","Java Lab","lab"]],2:[["9–10","Big Data"],["10–11","Cyber Security"],["11–11:30","Lunch","break"],["11:30–12:30","Enterprise Systems"],["12:30–2","Big Data Lab","lab"]]},"MCA":{1:[["9–10","Advanced Programming"],["10–11","Software Engineering"],["11–11:30","Lunch","break"],["11:30–12:30","Data Communication"],["12:30–2","SE Lab","lab"]],2:[["9–10","Cloud Computing"],["10–11","AI Concepts"],["11–11:30","Lunch","break"],["11:30–12:30","Cyber Security"],["12:30–2","Cloud Lab","lab"]]}};function openSem(dept){currentDept=dept;document.getElementById("dept").innerText=dept;document.getElementById("semPop").style.display="block";}function showRoutine(sem){document.getElementById("semPop").style.display="none";document.getElementById("routinePop").style.display="block";document.getElementById("title").innerText=currentDept+" - Semester "+sem;let body=document.getElementById("routineBody");body.innerHTML="";timetable[currentDept][sem].forEach(r=>{let tr=document.createElement("tr");if(r[2]) tr.className=r[2];tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td>`;body.appendChild(tr);});}function closeAll(){document.getElementById("semPop").style.display="none";document.getElementById("routinePop").style.display="none";}</script>
